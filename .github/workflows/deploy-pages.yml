@@ -34,6 +34,7 @@ jobs:
           mkdir -p dist
           cp about-AuraKare_Sollutions.html ai-ready-processing.html bpo-workflows.html data-security.html document-scanning.html get-in-touch.html index.html legacy-data-transformation.html privacy-policy.html sectors.html style.css script.js sitemap.xml robots.txt GoogleBrand.png ak-favicon.png ak-favicon.ico apple-touch-icon.png cta-banner.svg dist/
           cp -R Assets dist/Assets
+          printf '%s\n' 'aurakaresollutions.com' > dist/CNAME
 
           node <<'NODE'
           const fs = require('node:fs');
