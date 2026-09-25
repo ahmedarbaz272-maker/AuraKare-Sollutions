@@ -8,9 +8,9 @@ const githubAssetSources = {
   '.footer-logo source': 'Assets/Brand_Logo/Branding.mp4',
   '.social-link[aria-label="Facebook"] img': `${githubAssetBase}Icons/icons8-facebook.gif`,
   '.social-link[aria-label="LinkedIn"] img': `${githubAssetBase}Icons/icons8-linkedin-48.gif`,
-  '.services-hero-video source': `${githubAssetBase}HeroSection/Service%20Bars.mp4`,
+  '.services-hero-video source': `${githubAssetBase}HeroSection/Service Bars.mp4`,
   '.hero-video source': `${githubAssetBase}HeroSection/Main_Hero.mp4`,
-  '.contact-video-background source': `${githubAssetBase}Contact%20Page/Flying_through_geometric_tunnel_1080p_20260914140440.mp4`,
+  '.contact-video-background source': `${githubAssetBase}Contact Page/Flying_through_geometric_tunnel_1080p_20260914140440.mp4`,
   'input[value="request-a-meeting"] + .contact-intent-logo': `${githubAssetBase}Contact%20Page/request-a-meeting-organic-alt-1.png`,
   'input[value="careers"] + .contact-intent-logo': `${githubAssetBase}Contact%20Page/careers-icon-new.png`,
   'input[value="general-inquiries"] + .contact-intent-logo': `${githubAssetBase}Contact%20Page/general-inquiries-icon-only.png`
@@ -77,10 +77,10 @@ if (currentPage === 'bpo-workflows.html') {
 }
 
 const securityVideoByCard = {
-  '.security-media-facility': `${githubAssetBase}Data%20Security/Physical%20%26%20Operational%20Controls.mp4`,
-  '.security-media-data': `${githubAssetBase}Data%20Security/Data%20Protection%20Controls.mp4`,
-  '.security-media-people': `${githubAssetBase}Data%20Security/Employee%20Confidentiality.mp4`,
-  '.security-media-recovery': `${githubAssetBase}Data%20Security/Continuity%20Planning.mp4`
+  '.security-media-facility': `${githubAssetBase}Data Security/Physical & Operational Controls.mp4`,
+  '.security-media-data': `${githubAssetBase}Data Security/Data Protection Controls.mp4`,
+  '.security-media-people': `${githubAssetBase}Data Security/Employee Confidentiality.mp4`,
+  '.security-media-recovery': `${githubAssetBase}Data Security/Continuity Planning.mp4`
 };
 
 if (currentPage === 'data-security.html') {

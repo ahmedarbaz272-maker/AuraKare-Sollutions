@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.ak-consultancy.online/sitemap.xml
+Sitemap: https://aurakaresollutions.com/sitemap.xml
