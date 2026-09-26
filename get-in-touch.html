@@ -396,7 +396,11 @@
           this.reset();
         } catch (error) {
           console.error('Contact form submission failed:', error);
-          window.alert(`There was a problem sending your enquiry. ${error.message}`);
+          if (error.message.includes('P0001') || error.message.includes('Enquiry limit reached')) {
+            window.alert('Too many enquiries were submitted using this email address. Please wait 15 minutes before trying again.');
+          } else {
+            window.alert(`There was a problem sending your enquiry. ${error.message}`);
+          }
         } finally {
           submitButton.disabled = false;
         }

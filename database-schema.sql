@@ -13,6 +13,61 @@ CREATE INDEX IF NOT EXISTS idx_submissions_submitted_at
 CREATE INDEX IF NOT EXISTS idx_submissions_email
   ON public.submissions (email);
 
+CREATE TABLE IF NOT EXISTS public.submission_rate_limits (
+  email_fingerprint TEXT PRIMARY KEY,
+  window_started_at TIMESTAMPTZ NOT NULL,
+  submission_count INTEGER NOT NULL
+);
+
+ALTER TABLE public.submission_rate_limits ENABLE ROW LEVEL SECURITY;
+REVOKE ALL ON TABLE public.submission_rate_limits FROM PUBLIC, anon, authenticated;
+
+CREATE OR REPLACE FUNCTION public.enforce_submission_rate_limit()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = pg_catalog
+AS $$
+DECLARE
+  email_key TEXT := md5(lower(btrim(NEW.email)));
+  current_count INTEGER;
+BEGIN
+  INSERT INTO public.submission_rate_limits (
+    email_fingerprint,
+    window_started_at,
+    submission_count
+  )
+  VALUES (email_key, statement_timestamp(), 1)
+  ON CONFLICT (email_fingerprint) DO UPDATE
+  SET window_started_at = CASE
+        WHEN public.submission_rate_limits.window_started_at <= statement_timestamp() - INTERVAL '15 minutes'
+          THEN statement_timestamp()
+        ELSE public.submission_rate_limits.window_started_at
+      END,
+      submission_count = CASE
+        WHEN public.submission_rate_limits.window_started_at <= statement_timestamp() - INTERVAL '15 minutes'
+          THEN 1
+        ELSE public.submission_rate_limits.submission_count + 1
+      END
+  RETURNING submission_count INTO current_count;
+
+  IF current_count > 3 THEN
+    RAISE EXCEPTION 'Enquiry limit reached. Please try again later.'
+      USING ERRCODE = 'P0001';
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+REVOKE ALL ON FUNCTION public.enforce_submission_rate_limit() FROM PUBLIC, anon, authenticated;
+
+DROP TRIGGER IF EXISTS limit_submission_rate ON public.submissions;
+CREATE TRIGGER limit_submission_rate
+  BEFORE INSERT ON public.submissions
+  FOR EACH ROW
+  EXECUTE FUNCTION public.enforce_submission_rate_limit();
+
 ALTER TABLE public.submissions ENABLE ROW LEVEL SECURITY;
 
 REVOKE ALL ON TABLE public.submissions FROM PUBLIC, anon, authenticated;
