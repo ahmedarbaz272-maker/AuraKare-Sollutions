@@ -25,6 +25,7 @@ const publicFiles = [
   'sitemap.xml',
   'robots.txt',
   'GoogleBrand.png',
+  'GoogleBrand.jpeg',
   'ak-favicon.png',
   'ak-favicon.ico',
   'apple-touch-icon.png',
