@@ -1,0 +1,11 @@
+{
+  "name": "aurakare-sollutions-site-runtime",
+  "private": true,
+  "description": "Locally hosted frontend runtime libraries and fonts for the AuraKare Sollutions static site.",
+  "dependencies": {
+    "@fontsource-variable/dm-sans": "5.3.0",
+    "@fontsource-variable/manrope": "5.3.0",
+    "@fontsource-variable/newsreader": "5.3.0",
+    "three": "0.180.0"
+  }
+}

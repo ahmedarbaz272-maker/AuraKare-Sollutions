@@ -1,4 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Newsreader:wght@500&display=swap');
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 100 1000;
+  font-display: swap;
+  src: url('Assets/Fonts/dm-sans-latin-wght-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('Assets/Fonts/manrope-latin-wght-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('Assets/Fonts/newsreader-latin-wght-normal.woff2') format('woff2');
+}
 
 :root {
   --black-hsl: 220, 24%, 9%;
@@ -2396,7 +2418,7 @@ body:has(#bpo-workflows) .service-cta-banner {
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   background-color: #0c2b67;
-  background-image: linear-gradient(90deg, rgba(6, 26, 73, 0.96) 0%, rgba(12, 55, 135, 0.8) 48%, rgba(16, 91, 178, 0.65) 100%), url('https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1800&q=85');
+  background-image: linear-gradient(90deg, rgba(6, 26, 73, 0.96) 0%, rgba(12, 55, 135, 0.8) 48%, rgba(16, 91, 178, 0.65) 100%), url('Assets/CTA_Banners/Sector_CTA_Background.jpg');
   background-position: center;
   background-size: cover;
   box-shadow: inset 0 0 90px rgba(4, 16, 53, 0.42);

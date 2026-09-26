@@ -76,7 +76,7 @@
   <main class="data-security-page">
     <section class="data-security-hero" aria-labelledby="data-security-title">
       <video class="data-security-background-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-        <source src="https://video.squarespace-cdn.com/content/v1/6a20157083ce8d197c6b679f/80757e55-762e-4f39-8520-0f44e277afe6/playlist.m3u8" type="application/vnd.apple.mpegurl">
+        <source src="Assets/Data%20Security/Continuity%20Planning.mp4" type="video/mp4">
       </video>
       <div class="data-security-content">
         <p class="data-security-eyebrow">Data Security</p>
@@ -169,24 +169,6 @@
       </div>
     </div>
   </footer>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
-  <script>
-    const securityVideo = document.querySelector('.data-security-background-video');
-    const securitySource = securityVideo?.querySelector('source')?.src;
-    if (securityVideo && securitySource && window.Hls && Hls.isSupported()) {
-      const securityHls = new Hls({
-        enableWorker: true,
-        startLevel: 1,
-        capLevelToPlayerSize: false
-      });
-      securityHls.loadSource(securitySource);
-      securityHls.attachMedia(securityVideo);
-      securityHls.on(Hls.Events.MANIFEST_PARSED, () => securityVideo.play().catch(() => {}));
-    } else if (securityVideo && securitySource) {
-      securityVideo.src = securitySource;
-      securityVideo.play().catch(() => {});
-    }
-  </script>
   <script src="script.js?v=animation-2"></script>
 </body>
 </html>

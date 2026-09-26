@@ -1,4 +1,4 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js';
+import * as THREE from './Assets/Vendor/three.module.js';
 
 const hero = document.querySelector('.sectors-hero');
 const canvas = document.querySelector('.sectors-hero-canvas');
