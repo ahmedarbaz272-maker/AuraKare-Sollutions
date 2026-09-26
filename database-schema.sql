@@ -15,13 +15,41 @@ CREATE INDEX IF NOT EXISTS idx_submissions_email
 
 ALTER TABLE public.submissions ENABLE ROW LEVEL SECURITY;
 
-GRANT INSERT ON TABLE public.submissions TO anon, authenticated;
-GRANT USAGE, SELECT ON SEQUENCE public.submissions_id_seq TO anon, authenticated;
+REVOKE ALL ON TABLE public.submissions FROM PUBLIC, anon, authenticated;
+GRANT INSERT ON TABLE public.submissions TO anon;
+REVOKE ALL ON SEQUENCE public.submissions_id_seq FROM PUBLIC, anon, authenticated;
+GRANT USAGE ON SEQUENCE public.submissions_id_seq TO anon;
 
 DROP POLICY IF EXISTS "Allow website submissions" ON public.submissions;
 
 CREATE POLICY "Allow website submissions"
   ON public.submissions
   FOR INSERT
-  TO anon, authenticated
-  WITH CHECK (true);
+  TO anon
+  WITH CHECK (
+    inquiry_type IN ('request-a-meeting', 'careers', 'general-inquiries')
+    AND name IS NOT NULL
+    AND char_length(btrim(name)) BETWEEN 1 AND 255
+    AND email IS NOT NULL
+    AND char_length(email) <= 320
+    AND email ~* '^[^@[:space:]]+@[^@[:space:]]+[.][^@[:space:]]+$'
+    AND payload_json IS NOT NULL
+    AND jsonb_typeof(payload_json) = 'object'
+    AND pg_column_size(payload_json) <= 12000
+    AND (payload_json - ARRAY[
+      'name', 'email', 'news-updates', 'phone', 'work-volume',
+      'requirements', 'work-frequency', 'start-date', 'outsourcing-stage',
+      'position', 'state', 'city', 'message', 'country-region'
+    ]::TEXT[]) = '{}'::JSONB
+    AND payload_json ->> 'name' = name
+    AND payload_json ->> 'email' = email
+    AND jsonb_typeof(payload_json -> 'news-updates') = 'boolean'
+    AND char_length(COALESCE(payload_json ->> 'message', '')) <= 5000
+    AND char_length(COALESCE(payload_json ->> 'requirements', '')) <= 5000
+    AND char_length(COALESCE(payload_json ->> 'phone', '')) <= 64
+    AND char_length(COALESCE(payload_json ->> 'work-volume', '')) <= 255
+    AND char_length(COALESCE(payload_json ->> 'position', '')) <= 255
+    AND char_length(COALESCE(payload_json ->> 'state', '')) <= 255
+    AND char_length(COALESCE(payload_json ->> 'city', '')) <= 255
+    AND char_length(COALESCE(payload_json ->> 'country-region', '')) <= 255
+  );
