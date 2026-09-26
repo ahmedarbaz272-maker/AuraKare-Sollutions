@@ -392,26 +392,7 @@
             throw new Error(`Database submission failed: ${errorDetails || response.status}`);
           }
 
-          const emailResponse = await fetch(`${supabaseUrl}/functions/v1/Email_Contact_Form`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              ...payload,
-              inquiry_type: inquiryType
-            })
-          });
-
-          if (!emailResponse.ok) {
-            const errorDetails = await emailResponse.text();
-            console.error('Email notification failed after enquiry was saved:', errorDetails || emailResponse.status);
-            window.alert('Your enquiry was received and saved, but the email notification could not be sent. Please do not submit it again.');
-            this.reset();
-            return;
-          }
-
-          window.alert('Thank you. Your enquiry has been sent successfully.');
+          window.alert('Thank you. Your enquiry has been received and saved.');
           this.reset();
         } catch (error) {
           console.error('Contact form submission failed:', error);
