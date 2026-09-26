@@ -80,7 +80,7 @@ const securityVideoByCard = {
   '.security-media-facility': `${githubAssetBase}Data Security/Physical & Operational Controls.mp4`,
   '.security-media-data': `${githubAssetBase}Data Security/Data Protection Controls.mp4`,
   '.security-media-people': `${githubAssetBase}Data Security/Employee Confidentiality.mp4`,
-  '.security-media-recovery': `${githubAssetBase}Data Security/Continuity Planning.mp4`
+  '.security-media-recovery': `${githubAssetBase}Data Security/Continuity Planning.mp4?v=ce05b9e`
 };
 
 if (currentPage === 'data-security.html') {
