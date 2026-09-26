@@ -27,6 +27,7 @@ const publicFiles = [
   'robots.txt',
   'GoogleBrand.png',
   'GoogleBrand.jpeg',
+  'favicon.ico',
   'ak-favicon.png',
   'ak-favicon.ico',
   'apple-touch-icon.png',

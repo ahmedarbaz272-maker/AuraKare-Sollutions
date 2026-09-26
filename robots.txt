@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://aurakaresollutions.com/sitemap.xml
+Sitemap: https://www.aurakaresollutions.com/sitemap.xml

@@ -4,8 +4,8 @@ const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
 const githubAssetBase = 'Assets/';
 
 const githubAssetSources = {
-  '.brand-logo source': 'Assets/Brand_Logo/Branding.mp4',
-  '.footer-logo source': 'Assets/Brand_Logo/Branding.mp4',
+  '.brand-logo source': `${githubAssetBase}Brand_Logo/Branding.mp4`,
+  '.footer-logo source': `${githubAssetBase}Brand_Logo/Branding.mp4`,
   '.social-link[aria-label="Facebook"] img': `${githubAssetBase}Icons/icons8-facebook.gif`,
   '.social-link[aria-label="LinkedIn"] img': `${githubAssetBase}Icons/icons8-linkedin-48.gif`,
   '.services-hero-video source': `${githubAssetBase}HeroSection/Service Bars.mp4`,
