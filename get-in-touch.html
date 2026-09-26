@@ -405,7 +405,10 @@
 
           if (!emailResponse.ok) {
             const errorDetails = await emailResponse.text();
-            throw new Error(`Email notification failed: ${errorDetails || emailResponse.status}`);
+            console.error('Email notification failed after enquiry was saved:', errorDetails || emailResponse.status);
+            window.alert('Your enquiry was received and saved, but the email notification could not be sent. Please do not submit it again.');
+            this.reset();
+            return;
           }
 
           window.alert('Thank you. Your enquiry has been sent successfully.');
