@@ -20,6 +20,7 @@ const publicFiles = [
   'legacy-data-transformation.html',
   'privacy-policy.html',
   'sectors.html',
+  'sectors-galaxy.js',
   'style.css',
   'script.js',
   'sitemap.xml',

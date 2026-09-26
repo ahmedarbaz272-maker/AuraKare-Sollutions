@@ -2599,7 +2599,7 @@ body:has(#bpo-workflows) .case-studies-button:focus-visible {
 .site-header .brand {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 7px;
   text-decoration: none;
 }
 

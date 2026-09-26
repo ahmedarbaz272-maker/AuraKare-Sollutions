@@ -105,7 +105,7 @@ if (currentPage === 'data-security.html') {
 
 const sectorsCanvas = document.querySelector('.sectors-hero-canvas');
 const aboutBackground = document.querySelector('.hero-background');
-const sectorsParticleCount = 300;
+const sectorsParticleCount = 480;
 
 if (aboutBackground) {
   const barColors = ['#02264a', '#033b6d', '#00558f', '#0874bb', '#1594dd', '#0a477e'];
@@ -157,6 +157,10 @@ if (sectorsCanvas) {
   let height;
   let animationFrame;
   let startTime;
+  let wasGathering = false;
+  const particleCycleDuration = 9000;
+  const particleGatherDuration = 3600;
+  const particleHoldDuration = 1200;
 
   const resizeSectorsCanvas = () => {
     const scale = window.devicePixelRatio || 1;
@@ -183,19 +187,22 @@ if (sectorsCanvas) {
   const buildWordTargets = () => {
     const sampleCanvas = document.createElement('canvas');
     const sampleContext = sampleCanvas.getContext('2d');
-    const fontSize = Math.max(28, Math.min(72, width * 0.06));
-    const wordmarkCenter = width < 600 ? width * 0.58 : width * 0.72;
-    const sampleStep = width < 600 ? 3 : 4;
+    const fontSize = Math.max(48, Math.min(132, width * 0.11));
+    const sampleStep = width < 600 ? 2 : 2;
 
-    sampleCanvas.width = Math.ceil(Math.max(280, Math.min(width * 0.58, 620)));
-    sampleCanvas.height = Math.ceil(fontSize * 2.8);
-    sampleContext.font = `400 ${fontSize}px Algerian, serif`;
+    sampleCanvas.width = Math.ceil(Math.max(380, Math.min(width * 0.84, 1040)));
+    sampleCanvas.height = Math.ceil(fontSize * 2.65);
+    sampleContext.font = `700 ${fontSize}px Manrope, Arial, sans-serif`;
     sampleContext.textAlign = 'center';
     sampleContext.textBaseline = 'alphabetic';
     sampleContext.fillStyle = '#ffffff';
     sampleContext.fillText('AuraKare', sampleCanvas.width / 2, fontSize * 1.05);
-    sampleContext.fillText('Sollutions', sampleCanvas.width / 2, fontSize * 2.35);
+    sampleContext.fillText('Sollutions', sampleCanvas.width / 2, fontSize * 2.25);
 
+    const wordmarkCenter = Math.max(
+      sampleCanvas.width / 2 + 18,
+      Math.min(width - sampleCanvas.width / 2 - 18, width < 600 ? width * 0.58 : width * 0.72),
+    );
     const pixels = sampleContext.getImageData(0, 0, sampleCanvas.width, sampleCanvas.height).data;
     targetParticles.length = 0;
     for (let y = 0; y < sampleCanvas.height; y += sampleStep) {
@@ -220,25 +227,18 @@ if (sectorsCanvas) {
 
   const seedParticles = () => {
     particles.length = 0;
-    for (let index = 0; index < sectorsParticleCount; index += 1) {
+    for (let index = 0; index < Math.min(sectorsParticleCount, targetParticles.length); index += 1) {
       particles.push(randomParticle());
     }
   };
 
-  const splitParticle = (particle) => {
-    if (particles.length > sectorsParticleCount + 40 || particle.radius < 1.2) {
-      return;
-    }
-    particle.radius *= 0.72;
-    particles.push({ ...particle, vx: -particle.vy * 1.25, vy: particle.vx * 1.25, radius: particle.radius });
-  };
-
-  const updateParticle = (particle) => {
+  const updateParticle = (particle, formationProgress = 1) => {
     if (particle.target) {
-      particle.vx *= 0.8;
-      particle.vy *= 0.8;
-      particle.x += (particle.targetX - particle.x) * 0.16;
-      particle.y += (particle.targetY - particle.y) * 0.16;
+      const attraction = 0.06 + formationProgress * 0.14;
+      particle.vx *= 0.72;
+      particle.vy *= 0.72;
+      particle.x += (particle.targetX - particle.x) * attraction;
+      particle.y += (particle.targetY - particle.y) * attraction;
       return;
     }
 
@@ -250,34 +250,43 @@ if (sectorsCanvas) {
     if (particle.x < particle.radius || particle.x > width - particle.radius) {
       particle.vx *= -1;
       particle.x = Math.max(particle.radius, Math.min(width - particle.radius, particle.x));
-      splitParticle(particle);
     }
     if (particle.y < particle.radius || particle.y > height - particle.radius) {
       particle.vy *= -1;
       particle.y = Math.max(particle.radius, Math.min(height - particle.radius, particle.y));
-      splitParticle(particle);
     }
 
     particle.life += 1;
   };
 
   const drawSectorsScene = (now) => {
-    const activeTargets = targetParticles.length;
+    const cyclePhase = (now - startTime) % particleCycleDuration;
+    const formationProgress = Math.min(1, cyclePhase / particleGatherDuration);
+    const isGathering = cyclePhase < particleGatherDuration + particleHoldDuration;
+    const easedFormation = 1 - Math.pow(1 - formationProgress, 3);
+
+    if (!isGathering && wasGathering) {
+      particles.forEach((particle) => {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 1.8 + Math.random() * 1.6;
+        particle.vx = Math.cos(angle) * speed;
+        particle.vy = Math.sin(angle) * speed;
+      });
+    }
+    wasGathering = isGathering;
 
     context.clearRect(0, 0, width, height);
-    context.fillStyle = '#1c1c1c';
-    context.fillRect(0, 0, width, height);
     particles.forEach((particle, index) => {
-      particle.target = index < activeTargets;
+      particle.target = isGathering;
       particle.targetIndex = index % Math.max(1, targetParticles.length);
       if (targetParticles.length) {
         particle.targetX = targetParticles[particle.targetIndex].x;
         particle.targetY = targetParticles[particle.targetIndex].y;
       }
-      updateParticle(particle);
+      updateParticle(particle, easedFormation);
       const alpha = particle.target ? 0.96 : 0.28 + Math.random() * 0.16;
       const particleRadius = particle.target
-        ? Math.max(1.35, particle.radius * 2.8)
+        ? Math.max(1.55, particle.radius * 3.4)
         : particle.radius * 1.8;
       if (particle.target) {
         context.fillStyle = `rgba(255, 255, 255, ${alpha})`;

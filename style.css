@@ -333,6 +333,8 @@ body {
 
 /* Dark company header */
 .site-header {
+  position: relative;
+  z-index: 20;
   border-bottom: 0;
   background: hsla(var(--black-hsl), 1);
   color: var(--white);
@@ -710,9 +712,9 @@ body {
   isolation: isolate;
   display: flex;
   align-items: flex-end;
-  min-height: 460px;
+  min-height: max(760px, calc(100svh - 76px));
   overflow: hidden;
-  background: #07152d;
+  background: #000000;
   color: var(--white);
 }
 
@@ -726,36 +728,70 @@ body {
 
 .sectors-hero::before {
   z-index: -2;
-  background: linear-gradient(90deg, rgba(3, 14, 34, 0.98), rgba(5, 33, 78, 0.72) 52%, rgba(6, 74, 145, 0.48));
-  opacity: 0.3;
+  background: radial-gradient(ellipse at 72% 46%, rgba(25, 85, 164, 0.22), transparent 48%), linear-gradient(90deg, #000000, rgba(0, 0, 0, 0.76) 58%, rgba(0, 0, 0, 0.38));
+  opacity: 1;
 }
 
-.sectors-hero > video,
-.sectors-hero > .sectors-hero-canvas {
+.sectors-hero > .sectors-hero-galaxy {
   position: absolute;
   z-index: 0;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  opacity: 0.72;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sectors-hero-galaxy {
+  background:
+    radial-gradient(ellipse at 71% 47%, rgba(22, 67, 111, 0.42), transparent 38%),
+    radial-gradient(ellipse at 72% 47%, rgba(94, 84, 152, 0.22), transparent 56%);
 }
 
 .sectors-hero-canvas {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
   display: block;
-  opacity: 1 !important;
+  width: 100%;
+  height: 100%;
+  transform: translate3d(0, var(--galaxy-scroll-shift, 0px), 0) scale(1.035);
+  transform-origin: center;
+}
+
+.sectors-hero-drag-surface {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: grab;
+  touch-action: pan-y pinch-zoom;
+}
+
+.sectors-hero-drag-surface:active {
+  cursor: grabbing;
+}
+
+.sectors-hero-drag-surface:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.72);
+  outline-offset: -8px;
 }
 
 .sectors-hero::after {
   z-index: -1;
-  background: radial-gradient(circle at 78% 46%, rgba(54, 177, 255, 0.16), transparent 24%);
+  background: radial-gradient(circle at 74% 44%, rgba(54, 177, 255, 0.12), transparent 30%);
 }
 
 .sectors-hero-content {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   width: min(850px, 100%);
   padding: 0 80px 48px;
+  pointer-events: none;
 }
 
 .sectors-eyebrow,
@@ -1079,7 +1115,7 @@ body {
 @media (max-width: 560px) {
   .sectors-hero {
     display: block;
-    min-height: 560px;
+    min-height: max(680px, calc(100svh - 60px));
   }
   .sectors-hero-content {
     position: absolute;
@@ -2599,7 +2635,7 @@ body:has(#bpo-workflows) .case-studies-button:focus-visible {
 .site-header .brand {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 7px;
   text-decoration: none;
 }
 
@@ -2783,7 +2819,7 @@ body:has(#bpo-workflows) .case-studies-button:focus-visible {
   }
 
   .site-header .primary-navigation {
-    top: 48px;
+    top: 56px;
     right: 24px;
     left: 24px;
     margin-left: 0;
@@ -2888,7 +2924,7 @@ body:has(#bpo-workflows) .case-studies-button:focus-visible {
 @media (max-width: 560px) {
 
   .site-header .primary-navigation {
-    top: 48px;
+    top: 56px;
     right: 16px;
     left: 16px;
   }
