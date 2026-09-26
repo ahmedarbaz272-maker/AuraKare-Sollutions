@@ -2,11 +2,11 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const outputDirectory = path.resolve(process.argv[2] || 'dist');
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.Supabase_Public_URL || process.env.SUPABASE_URL;
+const supabaseAnonKey = process.env.Supabase_Anon_Key || process.env.SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Set SUPABASE_URL and SUPABASE_ANON_KEY in the Vercel project environment.');
+  throw new Error('Set Supabase_Public_URL and Supabase_Anon_Key in the Vercel project environment.');
 }
 
 const publicFiles = [
