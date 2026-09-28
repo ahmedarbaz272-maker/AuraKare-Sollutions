@@ -1199,7 +1199,7 @@ body {
   height: 100%;
   object-fit: cover;
   opacity: 1;
-  transform: scale(1.10);
+  transform: scale(1.25);
   transform-origin: center center;
   filter: hue-rotate(190deg) saturate(1.35) brightness(0.88);
 }
@@ -1208,8 +1208,20 @@ body {
   position: absolute;
   z-index: 2;
   inset: 0;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.04) 30%, rgba(0, 0, 0, 0.5) 100%);
+  background: radial-gradient(ellipse 420px 80px at 100% 100%, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.5) 68%, rgba(0, 0, 0, 0) 100%);
   content: '';
+}
+
+.data-security-hero::after {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  width: 260px;
+  height: 80px;
+  background: radial-gradient(ellipse 260px 80px at 100% 100%, rgba(0, 0, 0, 0.98) 0%, rgba(0, 0, 0, 0.96) 60%, rgba(0, 0, 0, 0) 100%);
+  content: '';
+  pointer-events: none;
 }
 
 .data-security-content {
