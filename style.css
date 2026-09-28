@@ -740,72 +740,23 @@ body {
   color: var(--white);
 }
 
-.sectors-hero::before,
-.sectors-hero::after {
-  position: absolute;
-  inset: 0;
-  content: '';
-  pointer-events: none;
-}
-
-.sectors-hero::before {
-  z-index: -2;
-  background: radial-gradient(ellipse at 72% 46%, rgba(25, 85, 164, 0.22), transparent 48%), linear-gradient(90deg, #000000, rgba(0, 0, 0, 0.76) 58%, rgba(0, 0, 0, 0.38));
-  opacity: 1;
-}
-
-.sectors-hero > .sectors-hero-galaxy {
+.sectors-hero-video {
   position: absolute;
   z-index: 0;
   inset: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  pointer-events: none;
+  object-fit: cover;
+  transform: scale(1.30);
+  transform-origin: center center;
 }
 
-.sectors-hero-galaxy {
-  background:
-    radial-gradient(ellipse at 71% 47%, rgba(22, 67, 111, 0.42), transparent 38%),
-    radial-gradient(ellipse at 72% 47%, rgba(94, 84, 152, 0.22), transparent 56%);
-}
-
-.sectors-hero-canvas {
+.sectors-hero-overlay {
   position: absolute;
   z-index: 1;
   inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  transform: translate3d(0, var(--galaxy-scroll-shift, 0px), 0) scale(1.035);
-  transform-origin: center;
-}
-
-.sectors-hero-drag-surface {
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: grab;
-  touch-action: pan-y pinch-zoom;
-}
-
-.sectors-hero-drag-surface:active {
-  cursor: grabbing;
-}
-
-.sectors-hero-drag-surface:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.72);
-  outline-offset: -8px;
-}
-
-.sectors-hero::after {
-  z-index: -1;
-  background: radial-gradient(circle at 74% 44%, rgba(54, 177, 255, 0.12), transparent 30%);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.26) 62%, rgba(0, 0, 0, 0.12));
+  pointer-events: none;
 }
 
 .sectors-hero-content {
@@ -1165,6 +1116,8 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .sectors-hero-video { display: none; }
+
   .sectors-cta,
   .sectors-cta::after,
   .sectors-cta::before,
@@ -1172,7 +1125,6 @@ body {
     animation: none;
   }
 
-  .sectors-hero::after,
   .sector-card { animation: none; transition: none; }
 }
 

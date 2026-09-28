@@ -75,9 +75,10 @@
 
   <main class="sectors-page">
     <section class="sectors-hero" aria-labelledby="sectors-title">
-      <div class="sectors-hero-galaxy" aria-hidden="true"></div>
-      <canvas class="sectors-hero-canvas" aria-hidden="true"></canvas>
-      <button class="sectors-hero-drag-surface" type="button" aria-label="Drag or use arrow keys to rotate the galaxy"></button>
+      <video class="sectors-hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+        <source src="Assets/HeroSection/Sectors_Hero.mp4" type="video/mp4">
+      </video>
+      <div class="sectors-hero-overlay" aria-hidden="true"></div>
       <div class="sectors-hero-content"><p class="sectors-eyebrow">Who We Serve</p><h1 id="sectors-title">If Your Organization Runs on Information, We Were Built for You.</h1></div>
     </section>
 
@@ -174,7 +175,6 @@
     </div>
   </footer>
   <script src="script.js?v=animation-2"></script>
-  <script type="module" src="sectors-galaxy.js?v=2"></script>
 </body>
 </html>
 
