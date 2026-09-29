@@ -31,7 +31,6 @@ const publicFiles = [
   'ak-favicon.png',
   'ak-favicon-v3.png',
   'ak-favicon.ico',
-  'apple-touch-icon.png',
   'cta-banner.svg'
 ];
 
