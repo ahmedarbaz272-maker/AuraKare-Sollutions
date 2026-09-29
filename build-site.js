@@ -31,7 +31,8 @@ const publicFiles = [
   'ak-favicon.png',
   'ak-favicon-v3.png',
   'ak-favicon.ico',
-  'cta-banner.svg'
+  'cta-banner.svg',
+  'AuraKare_Conversion_Guide.pdf'
 ];
 
 fs.rmSync(outputDirectory, { recursive: true, force: true });

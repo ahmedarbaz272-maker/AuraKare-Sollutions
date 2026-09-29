@@ -4,8 +4,8 @@ const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
 const githubAssetBase = 'Assets/';
 
 const githubAssetSources = {
-  '.brand-logo source': 'Assets/Brand_Logo/Branding.mp4',
-  '.footer-logo source': 'Assets/Brand_Logo/Branding.mp4',
+  '.brand-logo source': `${githubAssetBase}Brand_Logo/Branding.mp4`,
+  '.footer-logo source': `${githubAssetBase}Brand_Logo/Branding.mp4`,
   '.social-link[aria-label="Facebook"] img': `${githubAssetBase}Icons/icons8-facebook.gif`,
   '.social-link[aria-label="LinkedIn"] img': `${githubAssetBase}Icons/icons8-linkedin-48.gif`,
   '.services-hero-video source': `${githubAssetBase}HeroSection/Service Bars.mp4`,
@@ -80,7 +80,7 @@ const securityVideoByCard = {
   '.security-media-facility': `${githubAssetBase}Data Security/Physical & Operational Controls.mp4`,
   '.security-media-data': `${githubAssetBase}Data Security/Data Protection Controls.mp4`,
   '.security-media-people': `${githubAssetBase}Data Security/Employee Confidentiality.mp4`,
-  '.security-media-recovery': `${githubAssetBase}Data Security/Continuity Planning.mp4`
+  '.security-media-recovery': `${githubAssetBase}Data Security/Continuity Planning_ServCard.mp4?v=continuity-servcard-20260927`
 };
 
 if (currentPage === 'data-security.html') {
@@ -103,9 +103,7 @@ if (currentPage === 'data-security.html') {
   });
 }
 
-const sectorsCanvas = document.querySelector('.sectors-hero-canvas');
 const aboutBackground = document.querySelector('.hero-background');
-const sectorsParticleCount = 480;
 
 if (aboutBackground) {
   const barColors = ['#02264a', '#033b6d', '#00558f', '#0874bb', '#1594dd', '#0a477e'];
@@ -146,177 +144,6 @@ if (aboutBackground) {
   }
 
   aboutBackground.appendChild(fragment);
-}
-
-if (sectorsCanvas) {
-  const context = sectorsCanvas.getContext('2d');
-  const particles = [];
-  const targetParticles = [];
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let width;
-  let height;
-  let animationFrame;
-  let startTime;
-  let wasGathering = false;
-  const particleCycleDuration = 9000;
-  const particleGatherDuration = 3600;
-  const particleHoldDuration = 1200;
-
-  const resizeSectorsCanvas = () => {
-    const scale = window.devicePixelRatio || 1;
-    width = sectorsCanvas.clientWidth;
-    height = sectorsCanvas.clientHeight;
-    sectorsCanvas.width = width * scale;
-    sectorsCanvas.height = height * scale;
-    context.setTransform(scale, 0, 0, scale, 0, 0);
-  };
-
-  const randomParticle = (isTarget = false) => ({
-    x: Math.random() * width,
-    y: Math.random() * height,
-    vx: (Math.random() - 0.5) * 2.8,
-    vy: (Math.random() - 0.5) * 2.8,
-    radius: 0.5 + Math.random() * 0.45,
-    life: 0,
-    target: isTarget,
-    targetIndex: Math.floor(Math.random() * Math.max(1, targetParticles.length)),
-    targetX: 0,
-    targetY: 0
-  });
-
-  const buildWordTargets = () => {
-    const sampleCanvas = document.createElement('canvas');
-    const sampleContext = sampleCanvas.getContext('2d');
-    const fontSize = Math.max(48, Math.min(132, width * 0.11));
-    const sampleStep = width < 600 ? 2 : 2;
-
-    sampleCanvas.width = Math.ceil(Math.max(380, Math.min(width * 0.84, 1040)));
-    sampleCanvas.height = Math.ceil(fontSize * 2.65);
-    sampleContext.font = `700 ${fontSize}px Manrope, Arial, sans-serif`;
-    sampleContext.textAlign = 'center';
-    sampleContext.textBaseline = 'alphabetic';
-    sampleContext.fillStyle = '#ffffff';
-    sampleContext.fillText('AuraKare', sampleCanvas.width / 2, fontSize * 1.05);
-    sampleContext.fillText('Sollutions', sampleCanvas.width / 2, fontSize * 2.25);
-
-    const wordmarkCenter = Math.max(
-      sampleCanvas.width / 2 + 18,
-      Math.min(width - sampleCanvas.width / 2 - 18, width < 600 ? width * 0.58 : width * 0.72),
-    );
-    const pixels = sampleContext.getImageData(0, 0, sampleCanvas.width, sampleCanvas.height).data;
-    targetParticles.length = 0;
-    for (let y = 0; y < sampleCanvas.height; y += sampleStep) {
-      for (let x = 0; x < sampleCanvas.width; x += sampleStep) {
-        if (pixels[(y * sampleCanvas.width + x) * 4 + 3] > 150) {
-          targetParticles.push({
-            x: wordmarkCenter - sampleCanvas.width / 2 + x,
-            y: height * 0.43 - sampleCanvas.height / 2 + y
-          });
-        }
-      }
-    }
-
-    if (targetParticles.length > sectorsParticleCount) {
-      const sampledTargets = Array.from(
-        { length: sectorsParticleCount },
-        (_, index) => targetParticles[Math.floor(index * targetParticles.length / sectorsParticleCount)],
-      );
-      targetParticles.splice(0, targetParticles.length, ...sampledTargets);
-    }
-  };
-
-  const seedParticles = () => {
-    particles.length = 0;
-    for (let index = 0; index < Math.min(sectorsParticleCount, targetParticles.length); index += 1) {
-      particles.push(randomParticle());
-    }
-  };
-
-  const updateParticle = (particle, formationProgress = 1) => {
-    if (particle.target) {
-      const attraction = 0.06 + formationProgress * 0.14;
-      particle.vx *= 0.72;
-      particle.vy *= 0.72;
-      particle.x += (particle.targetX - particle.x) * attraction;
-      particle.y += (particle.targetY - particle.y) * attraction;
-      return;
-    }
-
-    particle.x += particle.vx;
-    particle.y += particle.vy;
-    particle.vx *= 1.002;
-    particle.vy *= 1.002;
-
-    if (particle.x < particle.radius || particle.x > width - particle.radius) {
-      particle.vx *= -1;
-      particle.x = Math.max(particle.radius, Math.min(width - particle.radius, particle.x));
-    }
-    if (particle.y < particle.radius || particle.y > height - particle.radius) {
-      particle.vy *= -1;
-      particle.y = Math.max(particle.radius, Math.min(height - particle.radius, particle.y));
-    }
-
-    particle.life += 1;
-  };
-
-  const drawSectorsScene = (now) => {
-    const cyclePhase = (now - startTime) % particleCycleDuration;
-    const formationProgress = Math.min(1, cyclePhase / particleGatherDuration);
-    const isGathering = cyclePhase < particleGatherDuration + particleHoldDuration;
-    const easedFormation = 1 - Math.pow(1 - formationProgress, 3);
-
-    if (!isGathering && wasGathering) {
-      particles.forEach((particle) => {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = 1.8 + Math.random() * 1.6;
-        particle.vx = Math.cos(angle) * speed;
-        particle.vy = Math.sin(angle) * speed;
-      });
-    }
-    wasGathering = isGathering;
-
-    context.clearRect(0, 0, width, height);
-    particles.forEach((particle, index) => {
-      particle.target = isGathering;
-      particle.targetIndex = index % Math.max(1, targetParticles.length);
-      if (targetParticles.length) {
-        particle.targetX = targetParticles[particle.targetIndex].x;
-        particle.targetY = targetParticles[particle.targetIndex].y;
-      }
-      updateParticle(particle, easedFormation);
-      const alpha = particle.target ? 0.96 : 0.28 + Math.random() * 0.16;
-      const particleRadius = particle.target
-        ? Math.max(1.55, particle.radius * 3.4)
-        : particle.radius * 1.8;
-      if (particle.target) {
-        context.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-      } else {
-        const gradient = context.createRadialGradient(particle.x, particle.y, 0, particle.x, particle.y, particle.radius * 2.1);
-        gradient.addColorStop(0, `rgba(255, 255, 255, ${alpha})`);
-        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-        context.fillStyle = gradient;
-      }
-      context.beginPath();
-      context.arc(particle.x, particle.y, particleRadius, 0, Math.PI * 2);
-      context.fill();
-    });
-
-    if (!reducedMotion) {
-      animationFrame = requestAnimationFrame(drawSectorsScene);
-    }
-  };
-
-  resizeSectorsCanvas();
-  buildWordTargets();
-  seedParticles();
-  startTime = performance.now();
-  window.addEventListener('resize', resizeSectorsCanvas);
-  window.addEventListener('resize', buildWordTargets);
-  drawSectorsScene(performance.now());
-
-  if (reducedMotion) {
-    cancelAnimationFrame(animationFrame);
-  }
 }
 
 document.querySelectorAll('.navigation-link, .footer-sectors a').forEach((link) => {
