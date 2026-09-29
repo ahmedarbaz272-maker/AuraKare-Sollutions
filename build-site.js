@@ -15,6 +15,7 @@ const publicFiles = [
   'bpo-workflows.html',
   'data-security.html',
   'document-scanning.html',
+  'download-guide.html',
   'get-in-touch.html',
   'index.html',
   'legacy-data-transformation.html',
