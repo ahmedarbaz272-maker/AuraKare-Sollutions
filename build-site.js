@@ -43,6 +43,9 @@ for (const file of publicFiles) {
   fs.copyFileSync(file, path.join(outputDirectory, file));
 }
 
+fs.copyFileSync('ak-favicon-circle.png', path.join(outputDirectory, 'ak-favicon-v3.png'));
+fs.copyFileSync('favicon-circle.ico', path.join(outputDirectory, 'favicon.ico'));
+
 fs.cpSync('Assets', path.join(outputDirectory, 'Assets'), { recursive: true });
 
 const config = { url: supabaseUrl, anonKey: supabaseAnonKey };
