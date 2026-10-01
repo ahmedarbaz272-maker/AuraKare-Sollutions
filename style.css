@@ -2999,18 +2999,35 @@ body:has(#bpo-workflows) .case-studies-button:focus-visible {
   }
 
   .hero-video::before {
-    height: auto;
+    height: 72px;
+    min-height: 0;
   }
 
   .hero-badges {
-    min-height: 176px;
-    padding: 16px 24px 16px 16px;
+    height: 72px;
+    min-height: 72px;
+    flex-wrap: nowrap;
+    align-content: center;
+    gap: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 12px 16px;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .hero-badges::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hero-badge {
+    white-space: nowrap;
   }
 
   .hero-content {
     width: 100%;
     margin-left: 16px;
-    padding: 48px 16px 64px 0;
+    padding: 48px 16px 96px 0;
   }
 
   .hero h1 {
