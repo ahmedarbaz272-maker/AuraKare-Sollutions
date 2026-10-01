@@ -26,13 +26,10 @@ const publicFiles = [
   'script.js',
   'sitemap.xml',
   'robots.txt',
-  'GoogleBrand.png',
   'GoogleBrand.jpeg',
   'favicon.ico',
-  'ak-favicon-circle.png',
   'ak-favicon.png',
   'ak-favicon-v3.png',
-  'ak-favicon.ico',
   'cta-banner.svg',
   'AuraKare_Conversion_Guide.pdf'
 ];
@@ -43,9 +40,6 @@ fs.mkdirSync(outputDirectory, { recursive: true });
 for (const file of publicFiles) {
   fs.copyFileSync(file, path.join(outputDirectory, file));
 }
-
-fs.copyFileSync('ak-favicon-circle.png', path.join(outputDirectory, 'ak-favicon-v3.png'));
-fs.copyFileSync('favicon-circle.ico', path.join(outputDirectory, 'favicon.ico'));
 
 fs.cpSync('Assets', path.join(outputDirectory, 'Assets'), { recursive: true });
 
