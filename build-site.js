@@ -27,8 +27,6 @@ const publicFiles = [
   'sitemap.xml',
   'robots.txt',
   'GoogleBrand.jpeg',
-  'favicon.ico',
-  'ak-favicon.png',
   'ak-favicon-v3.png',
   'cta-banner.svg',
   'AuraKare_Conversion_Guide.pdf'
