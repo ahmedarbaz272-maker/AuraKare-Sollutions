@@ -29,6 +29,7 @@ const publicFiles = [
   'GoogleBrand.png',
   'GoogleBrand.jpeg',
   'favicon.ico',
+  'ak-favicon-circle.png',
   'ak-favicon.png',
   'ak-favicon-v3.png',
   'ak-favicon.ico',
