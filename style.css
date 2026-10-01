@@ -1615,6 +1615,7 @@ body {
 }
 
 .hero-button-secondary {
+  min-width: 190px;
   background: #cfe4ff;
   color: var(--blue);
 }
