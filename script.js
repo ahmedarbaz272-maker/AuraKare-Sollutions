@@ -450,7 +450,7 @@ if ('IntersectionObserver' in window) {
         <strong class="cookie-preference-status">Always on</strong>
       </div>
       <label class="cookie-preference-row cookie-preference-toggle">
-        <div><strong>Analytics</strong><span>Helps us understand visits and improve the website. No analytics cookies are currently activated.</span></div>
+        <div><strong>Analytics</strong><span>Google Analytics 4 helps us understand visits and improve the website. Only enabled with your permission.</span></div>
         <input type="checkbox" data-cookie-category="analytics">
       </label>
       <label class="cookie-preference-row cookie-preference-toggle">
@@ -477,8 +477,36 @@ if ('IntersectionObserver' in window) {
     element.classList.toggle('is-visible', visible);
   };
   const closePreferences = () => setVisible(modal, false);
+  const enableAnalytics = () => {
+    if (window.__aurakareAnalyticsLoaded) {
+      return;
+    }
+
+    window.__aurakareAnalyticsLoaded = true;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function gtag() {
+      window.dataLayer.push(arguments);
+    };
+    window.gtag('js', new Date());
+    window.gtag('consent', 'default', {
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied'
+    });
+    window.gtag('consent', 'update', { analytics_storage: 'granted' });
+    window.gtag('config', 'G-0DP7X434XL', { anonymize_ip: true });
+
+    const analyticsScript = document.createElement('script');
+    analyticsScript.async = true;
+    analyticsScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-0DP7X434XL';
+    document.head.appendChild(analyticsScript);
+  };
   const applyConsent = (choice) => {
     saveConsent(choice);
+    if (choice.analytics) {
+      enableAnalytics();
+    }
     closePreferences();
     setVisible(banner, false);
   };
@@ -517,6 +545,9 @@ if ('IntersectionObserver' in window) {
 
   if (existingConsent) {
     setVisible(banner, false);
+    if (existingConsent.analytics === true) {
+      enableAnalytics();
+    }
   } else {
     setVisible(banner, true);
   }
