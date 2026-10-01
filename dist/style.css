@@ -4958,3 +4958,51 @@ svg {
     min-height: 560px;
   }
 }
+
+/* Match download-guide content gutters to the shared header and footer. */
+.download-guide-hero-inner,
+.download-guide-highlights,
+.download-guide-story {
+  max-width: none;
+}
+
+.download-guide-hero-inner {
+  padding-right: 80px;
+  padding-left: 80px;
+}
+
+.download-guide-highlights {
+  padding-right: 80px;
+  padding-left: 80px;
+}
+
+.download-guide-story {
+  padding-right: 80px;
+  padding-left: 80px;
+}
+
+@media (max-width: 1030px) {
+  .download-guide-hero-inner {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  .download-guide-highlights,
+  .download-guide-story {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+}
+
+@media (max-width: 560px) {
+  .download-guide-hero-inner {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .download-guide-highlights,
+  .download-guide-story {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+}
