@@ -3682,6 +3682,9 @@ svg {
 
 .download-guide-card {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
   padding: clamp(26px, 4vw, 38px);
   border: 1px solid rgba(153, 177, 206, 0.24);
   border-radius: 22px;
@@ -3706,7 +3709,7 @@ svg {
 }
 
 .download-guide-card h2 {
-  margin: 18px 0 10px;
+  margin: 0;
   font-family: 'Manrope', sans-serif;
   font-size: clamp(1.8rem, 2vw, 2.4rem);
   line-height: 1.1;
@@ -3720,8 +3723,7 @@ svg {
 
 .download-form {
   display: grid;
-  gap: 12px;
-  margin-top: 22px;
+  gap: 16px;
 }
 
 .download-form input {
@@ -3767,29 +3769,7 @@ svg {
 }
 
 .download-form-note {
-  margin-top: 14px;
   font-size: 0.8rem;
-}
-
-.download-guide-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 18px;
-  padding-top: 18px;
-  border-top: 1px solid #e7edf4;
-  color: var(--muted);
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.download-guide-meta span {
-  display: inline-flex;
-  align-items: center;
-  min-height: 28px;
-  padding: 0 10px;
-  border-radius: 999px;
-  background: #edf5ff;
 }
 
 .download-guide-highlights {
@@ -3990,11 +3970,6 @@ svg {
   .download-guide-card,
   .download-guide-highlight-card {
     border-radius: 18px;
-  }
-
-  .download-guide-meta {
-    flex-direction: column;
-    align-items: flex-start;
   }
 
   .panel-metric strong {
