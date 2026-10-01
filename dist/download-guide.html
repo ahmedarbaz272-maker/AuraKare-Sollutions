@@ -214,11 +214,12 @@
   </footer>
 
   <script src="script.js?v=download-guide-2026-09-29"></script>
+  <script src="supabase-config.js"></script>
   <script>
     const guideForm = document.getElementById('download-guide-form');
 
     if (guideForm) {
-      guideForm.addEventListener('submit', (event) => {
+      guideForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
         const form = event.currentTarget;
@@ -232,21 +233,63 @@
           return;
         }
 
+        const supabaseUrl = window.supabaseConfig?.url;
+        const supabaseAnonKey = window.supabaseConfig?.anonKey;
+
+        if (!supabaseUrl || !supabaseAnonKey) {
+          window.alert('The download service is temporarily unavailable. Please try again later.');
+          return;
+        }
+
         submitButton.disabled = true;
-        submitButton.textContent = 'Preparing download...';
+        submitButton.textContent = 'Saving...';
 
-        const downloadLink = document.createElement('a');
-        downloadLink.href = '/AuraKare_Conversion_Guide.pdf';
-        downloadLink.download = 'AuraKare_Conversion_Guide.pdf';
-        downloadLink.rel = 'noopener';
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        downloadLink.remove();
+        try {
+          const payload = {
+            name: 'Download Guide',
+            email,
+            'news-updates': false
+          };
 
-        form.reset();
-        window.alert('Your guide download is starting.');
-        submitButton.disabled = false;
-        submitButton.textContent = 'Download now';
+          const response = await fetch(`${supabaseUrl}/rest/v1/submissions`, {
+            method: 'POST',
+            headers: {
+              apikey: supabaseAnonKey,
+              Authorization: `Bearer ${supabaseAnonKey}`,
+              'Content-Type': 'application/json',
+              Prefer: 'return=minimal'
+            },
+            body: JSON.stringify({
+              inquiry_type: 'general-inquiries',
+              name: payload.name,
+              email,
+              payload_json: payload
+            })
+          });
+
+          if (!response.ok) {
+            const details = await response.text();
+            throw new Error(`Unable to save your request: ${details || response.status}`);
+          }
+
+          submitButton.textContent = 'Preparing download...';
+          const downloadLink = document.createElement('a');
+          downloadLink.href = '/AuraKare_Conversion_Guide.pdf';
+          downloadLink.download = 'AuraKare_Conversion_Guide.pdf';
+          downloadLink.rel = 'noopener';
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          downloadLink.remove();
+
+          form.reset();
+          window.alert('Your guide download is starting.');
+        } catch (error) {
+          console.error('Guide request failed:', error);
+          window.alert(error.message || 'There was a problem saving your request.');
+        } finally {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Download now';
+        }
       });
     }
   </script>

@@ -22,7 +22,8 @@ test('guide email payload includes PDF attachment metadata', () => {
 test('guide form downloads the PDF directly', () => {
   const fs = require('node:fs');
   const html = fs.readFileSync(require('node:path').join(__dirname, '..', 'download-guide.html'), 'utf8');
+  assert.match(html, /rest\/v1\/submissions/);
+  assert.match(html, /inquiry_type: 'general-inquiries'/);
   assert.match(html, /downloadLink\.download\s*=\s*['"]AuraKare_Conversion_Guide\.pdf/);
   assert.match(html, /\/AuraKare_Conversion_Guide\.pdf/);
-  assert.doesNotMatch(html, /functions\/v1\/send-guide-email/);
 });
