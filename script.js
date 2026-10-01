@@ -397,3 +397,127 @@ if ('IntersectionObserver' in window) {
     videoObserver.observe(video);
   });
 }
+
+/* Privacy-friendly cookie consent. Essential site storage is always available; optional categories are off by default. */
+(() => {
+  const consentKey = 'aurakare_cookie_consent';
+  const readConsent = () => {
+    try {
+      return JSON.parse(localStorage.getItem(consentKey) || 'null');
+    } catch {
+      return null;
+    }
+  };
+  const saveConsent = (value) => {
+    try {
+      localStorage.setItem(consentKey, JSON.stringify({ ...value, updatedAt: new Date().toISOString() }));
+    } catch {
+      // Continue without persistence if browser storage is unavailable.
+    }
+  };
+
+  const existingConsent = readConsent();
+  const banner = document.createElement('aside');
+  banner.className = 'cookie-consent-banner';
+  banner.setAttribute('aria-label', 'Cookie consent');
+  banner.innerHTML = `
+    <div class="cookie-consent-copy">
+      <p class="cookie-consent-eyebrow">Your privacy matters</p>
+      <h2>We use cookies</h2>
+      <p>We use essential storage to make this website work. With your permission, we may also use optional cookies to understand site usage and improve your experience. Read our <a href="privacy-policy.html#cookies">Privacy and Cookie Policy</a>.</p>
+    </div>
+    <div class="cookie-consent-actions">
+      <button type="button" class="cookie-button cookie-button-secondary" data-cookie-action="reject">Reject all</button>
+      <button type="button" class="cookie-button cookie-button-secondary" data-cookie-action="manage">Manage preferences</button>
+      <button type="button" class="cookie-button cookie-button-primary" data-cookie-action="accept">Accept all</button>
+    </div>`;
+
+  const modal = document.createElement('div');
+  modal.className = 'cookie-preferences-modal';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
+  modal.setAttribute('aria-labelledby', 'cookie-preferences-title');
+  modal.hidden = true;
+  modal.innerHTML = `
+    <div class="cookie-preferences-backdrop" data-cookie-action="close"></div>
+    <div class="cookie-preferences-card">
+      <button type="button" class="cookie-preferences-close" aria-label="Close cookie preferences" data-cookie-action="close">&times;</button>
+      <p class="cookie-consent-eyebrow">Privacy choices</p>
+      <h2 id="cookie-preferences-title">Cookie preferences</h2>
+      <p>Choose which optional categories you allow. You can change these choices at any time using Cookie Settings.</p>
+      <div class="cookie-preference-row">
+        <div><strong>Essential</strong><span>Required for core site functions and your consent choice.</span></div>
+        <strong class="cookie-preference-status">Always on</strong>
+      </div>
+      <label class="cookie-preference-row cookie-preference-toggle">
+        <div><strong>Analytics</strong><span>Helps us understand visits and improve the website. No analytics cookies are currently activated.</span></div>
+        <input type="checkbox" data-cookie-category="analytics">
+      </label>
+      <label class="cookie-preference-row cookie-preference-toggle">
+        <div><strong>Marketing</strong><span>Used to personalize marketing and measure campaigns. No marketing cookies are currently activated.</span></div>
+        <input type="checkbox" data-cookie-category="marketing">
+      </label>
+      <div class="cookie-preferences-actions">
+        <button type="button" class="cookie-button cookie-button-secondary" data-cookie-action="reject">Reject all</button>
+        <button type="button" class="cookie-button cookie-button-primary" data-cookie-action="save">Save preferences</button>
+      </div>
+    </div>`;
+
+  const settingsButton = document.createElement('button');
+  settingsButton.type = 'button';
+  settingsButton.className = 'cookie-settings-trigger';
+  settingsButton.textContent = 'Cookie Settings';
+  settingsButton.setAttribute('aria-label', 'Open cookie settings');
+  settingsButton.dataset.cookieAction = 'manage';
+
+  document.body.append(banner, modal, settingsButton);
+
+  const setVisible = (element, visible) => {
+    element.hidden = !visible;
+    element.classList.toggle('is-visible', visible);
+  };
+  const closePreferences = () => setVisible(modal, false);
+  const applyConsent = (choice) => {
+    saveConsent(choice);
+    closePreferences();
+    setVisible(banner, false);
+  };
+  const openPreferences = () => {
+    const choice = readConsent() || {};
+    modal.querySelector('[data-cookie-category="analytics"]').checked = choice.analytics === true;
+    modal.querySelector('[data-cookie-category="marketing"]').checked = choice.marketing === true;
+    setVisible(modal, true);
+    modal.querySelector('.cookie-preferences-close').focus();
+  };
+
+  banner.querySelectorAll('[data-cookie-action]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const action = button.dataset.cookieAction;
+      if (action === 'accept') applyConsent({ essential: true, analytics: true, marketing: true });
+      if (action === 'reject') applyConsent({ essential: true, analytics: false, marketing: false });
+      if (action === 'manage') openPreferences();
+    });
+  });
+  modal.querySelectorAll('[data-cookie-action]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const action = button.dataset.cookieAction;
+      if (action === 'close') closePreferences();
+      if (action === 'reject') applyConsent({ essential: true, analytics: false, marketing: false });
+      if (action === 'save') applyConsent({
+        essential: true,
+        analytics: modal.querySelector('[data-cookie-category="analytics"]').checked,
+        marketing: modal.querySelector('[data-cookie-category="marketing"]').checked
+      });
+    });
+  });
+  settingsButton.addEventListener('click', openPreferences);
+  modal.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closePreferences();
+  });
+
+  if (existingConsent) {
+    setVisible(banner, false);
+  } else {
+    setVisible(banner, true);
+  }
+})();
