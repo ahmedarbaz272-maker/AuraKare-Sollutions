@@ -5264,3 +5264,44 @@ svg {
     grid-template-columns: 1fr;
   }
 }
+
+/* Dark translucent glass treatment for cookie controls. */
+.cookie-consent-banner {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(3, 13, 24, 0.88);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  color: var(--white);
+}
+
+.cookie-consent-copy h2,
+.cookie-consent-copy p:not(.cookie-consent-eyebrow) {
+  color: var(--white);
+}
+
+.cookie-consent-copy p:not(.cookie-consent-eyebrow) {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.cookie-consent-copy a {
+  color: #9cc8ff;
+}
+
+.cookie-button-secondary {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--white);
+}
+
+.cookie-button-secondary:hover,
+.cookie-button-secondary:focus-visible {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.cookie-settings-trigger {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(3, 13, 24, 0.88);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  color: var(--white);
+}
