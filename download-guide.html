@@ -212,7 +212,7 @@
     const guideForm = document.getElementById('download-guide-form');
 
     if (guideForm) {
-      guideForm.addEventListener('submit', async (event) => {
+      guideForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
         const form = event.currentTarget;
@@ -220,49 +220,27 @@
         const submitButton = form.querySelector('button[type="submit"]');
         const email = (emailInput.value || '').trim();
 
-        if (!email) {
-          window.alert('Please enter a valid email address.');
+        if (!email || !emailInput.checkValidity()) {
+          emailInput.reportValidity();
           emailInput.focus();
           return;
         }
 
         submitButton.disabled = true;
-        submitButton.textContent = 'Sending...';
+        submitButton.textContent = 'Preparing download...';
 
-        try {
-          const supabaseUrl = window.supabaseConfig?.url;
-          const supabaseAnonKey = window.supabaseConfig?.anonKey;
-          const functionUrl = supabaseUrl
-            ? `${supabaseUrl}/functions/v1/send-guide-email`
-            : '/api/send-guide';
+        const downloadLink = document.createElement('a');
+        downloadLink.href = '/AuraKare_Conversion_Guide.pdf';
+        downloadLink.download = 'AuraKare_Conversion_Guide.pdf';
+        downloadLink.rel = 'noopener';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        downloadLink.remove();
 
-          const response = await fetch(functionUrl, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              ...(supabaseUrl ? {
-                apikey: supabaseAnonKey,
-                Authorization: `Bearer ${supabaseAnonKey}`
-              } : {})
-            },
-            body: JSON.stringify({ email })
-          });
-
-          const data = await response.json().catch(() => ({}));
-
-          if (!response.ok) {
-            throw new Error(data.error || 'Unable to send the guide right now.');
-          }
-
-          form.reset();
-          window.alert('Your guide has been sent to your inbox. Please check your email.');
-        } catch (error) {
-          console.error('Guide submission failed:', error);
-          window.alert(error.message || 'There was a problem sending the guide.');
-        } finally {
-          submitButton.disabled = false;
-          submitButton.textContent = 'Download now';
-        }
+        form.reset();
+        window.alert('Your guide download is starting.');
+        submitButton.disabled = false;
+        submitButton.textContent = 'Download now';
       });
     }
   </script>
