@@ -427,7 +427,7 @@ if ('IntersectionObserver' in window) {
       <p>We use essential storage to make this website work. With your permission, we may also use optional cookies to understand site usage and improve your experience. Read our <a href="privacy-policy.html#cookies">Privacy and Cookie Policy</a>.</p>
     </div>
     <div class="cookie-consent-actions">
-      <button type="button" class="cookie-button cookie-button-secondary" data-cookie-action="reject">Reject all</button>
+      <button type="button" class="cookie-button cookie-button-secondary" data-cookie-action="reject">Reject unnecessary</button>
       <button type="button" class="cookie-button cookie-button-secondary" data-cookie-action="manage">Manage preferences</button>
       <button type="button" class="cookie-button cookie-button-primary" data-cookie-action="accept">Accept all</button>
     </div>`;
@@ -458,7 +458,7 @@ if ('IntersectionObserver' in window) {
         <input type="checkbox" data-cookie-category="marketing">
       </label>
       <div class="cookie-preferences-actions">
-        <button type="button" class="cookie-button cookie-button-secondary" data-cookie-action="reject">Reject all</button>
+        <button type="button" class="cookie-button cookie-button-secondary" data-cookie-action="reject">Reject unnecessary</button>
         <button type="button" class="cookie-button cookie-button-primary" data-cookie-action="save">Save preferences</button>
       </div>
     </div>`;
